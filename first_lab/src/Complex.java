@@ -1,43 +1,69 @@
-public class Complex {
-    private int Re;
-    private int Im;
+import java.util.Locale; //нужно для красивого вывода
 
-    Complex(){
+public class Complex {
+    private static final double EPS = 1e-9;
+    private final double re;
+    private final double im;
+
+    public Complex(){
         this(0,0);
     }
-    Complex(int Re, int Im){
-        this.Re = Re;
-        this.Im = Im;
+    public Complex(double re, double im){
+        this.re = re;
+        this.im = im;
     }
 
-    public int getRe() {return Re;}
-    public int getIm() {return Im;}
-
-    public void setRe(int nRe){
-        Re = nRe;
+    private static boolean isZero(double x){
+        return Math.abs(x) < EPS;
     }
 
-    public void setIm(int nIm){
-        Im = nIm;
+    private static String fmt(double x){
+        String s = String.format(Locale.US, "%.2f", x);
+        if (s.equals("-0.00")){
+            return "0.00";
+        }
+        else{
+            return s;
+        }
     }
+
+    public double getRe() {return re;}
+    public double getIm() {return im;}
 
     public Complex add(Complex p){
-        return new Complex(Re + p.Re, Im + p.Im);
+        return new Complex(re + p.re, im + p.im);
     }
 
-    public Complex mult(Complex p){
-        int NewRe = Re * p.Re - Im * p.Im;
-        int NewIm = Re * p.Im + Im * p.Re;
-        return new Complex(NewRe, NewIm);
+    public Complex sub(Complex p){
+        return new Complex(re - p.re, im - p.im);
     }
 
+    public Complex multiply(Complex p){
+        double newRe = re * p.re - im * p.im;
+        double newIm = re * p.im + im * p.re;
+        return new Complex(newRe, newIm);
+    }
+
+    public Complex divide(Complex p){
+
+        double denom = (Math.pow(p.re, 2) + Math.pow(p.im, 2));
+        if (isZero(denom)){
+            throw new ArithmeticException("Division by zero complex number");
+        }
+
+        double newRe = (re * p.re + im * p.im) / denom;
+        double newIm = (im * p.re - re * p.im) / denom;
+        return new Complex(newRe, newIm);
+    }
+
+    @Override
     public String toString(){
-        if (Re == 0 && Im == 0) {return "0";}
-        if (Re == 0) {return Im + "i";}
-        if (Im == 0) {return String.valueOf(Re);}
+        if (isZero(re) && isZero(im)) {return "0";}
+        if (isZero(re)) {return im + "i";}
+        if (isZero(im)) {return String.valueOf(re);}
 
-        String sign = (Im < 0) ? " - " : " + ";
-        return Re + sign + Math.abs(Im) + "i";
+        String sign = (im < 0) ? " - " : " + ";
+        return fmt(re) + sign + fmt(Math.abs(im)) + "i";
     }
 }
 
