@@ -1,15 +1,15 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+/* Итак, задание на первую практическую работу: написать класс для работы с матрицами комплексных чисел.
+В классе должны быть методы, позволяющие сложить, перемножить,
+разделить матрицы (при возможности), транспонировать и вычислить определитель.
+К классу должен прилагаться консольный интерфейс, позволяющий создать матрицу и задать операцию.
+Сдавать в виде ссылки на гитхаб (предпочтительно) или в виде приаттаченных Java файлов.
+Срок сдачи до 15.10 Вопросы по заданию задавать здесь. */
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
-
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+        byte b = (byte)0xf1;
+        byte b1 = (byte)(b>>>4);
+        System.out.println(b1);
     }
 }
+
