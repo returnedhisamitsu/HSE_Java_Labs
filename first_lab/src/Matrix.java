@@ -45,11 +45,17 @@ public class Matrix {
                 throw new IllegalArgumentException("All rows of the matrix must be of the same length.");
             }
             for (int j = 0; j < m; j++) {
+                if (arr[i][j] == null){
+                    throw new IllegalArgumentException("Matrix element at (" + i + ", " + j + ") must not be null.");
+                }
                 data[i][j] = arr[i][j];
             }
         }
 
     }
+
+    public int getRows() { return n; }
+    public int getCols() { return m; }
 
     public Complex get(int i, int j) {
         if (i < 0 || i >= n || j < 0 || j >= m) {
@@ -195,7 +201,12 @@ public class Matrix {
     public Matrix inverse(){
         Complex det = this.findDet();
         if (det.isEqual(Complex.ZERO)){
-            throw new IllegalArgumentException("Can't find inverse matrix if it has determinant = 0");
+            throw new ArithmeticException("Can't find inverse matrix if it has determinant = 0");
+        }
+
+        if (n == 1) {
+            Complex[][] single = { { Complex.ONE.divide(data[0][0]) } };
+            return new Matrix(single);
         }
 
         Complex[][] newData = new Complex[n][m];
@@ -213,9 +224,31 @@ public class Matrix {
     }
 
     public Matrix divide(Matrix other){
-        if(other.findDet().isEqual(Complex.ZERO)){
-            throw new ArithmeticException("Matrix is singular, cannot divide");
-        }
         return this.multiply(other.inverse());
+    }
+
+    @Override
+    public String toString(){
+        String[][] textMatrix = new String[n][m];
+        int width = 0;
+
+        for (int i = 0; i < n; i++){
+            for (int j = 0; j < m; j++){
+                textMatrix[i][j] = data[i][j].toString();
+                width = Math.max(width, textMatrix[i][j].length());
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n; i++){
+            sb.append("| ");
+            for (int j = 0; j < m; j++){
+                sb.append(String.format("%" + width + "s", textMatrix[i][j]));
+                if (j < m - 1) {sb.append("  ");}
+            }
+            sb.append(" |");
+            if (i < n - 1){sb.append("\n");}
+        }
+        return sb.toString();
     }
 }

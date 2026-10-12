@@ -7,9 +7,7 @@
 
 public class Main {
     public static void main(String[] args) {
-        byte b = (byte)0xf1;
-        byte b1 = (byte)(b>>>4);
-        System.out.println(b1);
+        new ConsoleUI().run();
     }
 }
 
