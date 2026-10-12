@@ -14,7 +14,7 @@ public class Matrix {
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                this.data[i][j] = new Complex(0, 0);
+                this.data[i][j] = Complex.ZERO;
             }
         }
     }
@@ -94,5 +94,128 @@ public class Matrix {
             }
         }
         return new Matrix(newData);
+    }
+
+    public Matrix multByNum(double num){
+        Complex[][] newData = new Complex[n][m];
+        Complex numInComplex = new Complex(num, 0);
+        for (int i = 0; i < n; i++){
+            for (int j = 0; j < m; j++){
+                newData[i][j] = data[i][j].multiply(numInComplex);
+            }
+        }
+        return new Matrix(newData);
+    }
+
+    public Matrix divByNum(double num){ //добавить исключение при делении на ноль
+        Complex[][] newData = new Complex[n][m];
+        Complex numInComplex = new Complex(num, 0);
+        for (int i = 0; i < n; i++){
+            for (int j = 0; j < m; j++){
+                newData[i][j] = data[i][j].divide(numInComplex);
+            }
+        }
+        return new Matrix(newData);
+    }
+
+    public Matrix multiply(Matrix other){
+        if (m != other.n){
+            throw new IllegalArgumentException("Number of cols in Matrix 1 must be equal" +
+                    " to number of rows in Matrix 2");
+        }
+
+        Complex[][] newData = new Complex[n][other.m];
+
+        for (int i = 0; i < n; i++){
+           for (int j = 0; j < other.m; j++){
+               Complex sum = Complex.ZERO;
+               for (int k = 0; k < m; k++){
+                   sum = sum.add(data[i][k].multiply(other.data[k][j]));
+               }
+               newData[i][j] = sum;
+           }
+        }
+        return new Matrix(newData);
+    }
+
+    public Matrix transpose(){
+        Complex[][] newData = new Complex[m][n];
+        for (int i = 0; i < n; i++){
+            for (int j = 0; j < m; j++){
+                newData[j][i] = data[i][j];
+            }
+        }
+        return new Matrix(newData);
+    }
+
+    private Matrix minor(int i_target, int j_target){
+        Complex[][] newData = new Complex[n-1][m-1];
+        int ni = 0;
+        for (int i = 0; i < n; i++){
+            if (i == i_target){continue;}
+            int nj = 0;
+            for (int j = 0; j < m; j++){
+                if (j == j_target){continue;}
+                newData[ni][nj] = data[i][j];
+                nj += 1;
+            }
+            ni += 1;
+        }
+        return new Matrix(newData);
+    }
+
+    public Complex findDet(){
+        if (n != m){
+            throw new IllegalArgumentException("Matrix must be square size");
+        }
+        int size = n;
+        if (size == 1){return data[0][0];}
+        if (size == 2){return (data[0][0].multiply(data[1][1])).sub(data[0][1].multiply(data[1][0]));}
+
+        Complex res = Complex.ZERO;
+        for (int j = 0; j < m; j++){
+
+            int sign = (j % 2 == 0) ? 1 : -1;
+
+            if (sign == 1){
+                res = res.add(data[0][j].multiply(findDetOfMinor(0, j)));
+            }
+            else{
+                res = res.sub(data[0][j].multiply(findDetOfMinor(0, j)));
+            }
+        }
+
+        return res;
+    }
+
+    private Complex findDetOfMinor(int i, int j){
+        return minor(i, j).findDet();
+    }
+
+    public Matrix inverse(){
+        Complex det = this.findDet();
+        if (det.isEqual(Complex.ZERO)){
+            throw new IllegalArgumentException("Can't find inverse matrix if it has determinant = 0");
+        }
+
+        Complex[][] newData = new Complex[n][m];
+        for (int i = 0; i < n; i++){
+            for (int j = 0; j < m; j++){
+                if ((i + j) % 2 == 0){
+                    newData[i][j] = findDetOfMinor(i, j).divide(det);
+                }
+                else {
+                    newData[i][j] = (Complex.minusONE.multiply(findDetOfMinor(i, j))).divide(det);
+                }
+            }
+        }
+        return new Matrix(newData).transpose();
+    }
+
+    public Matrix divide(Matrix other){
+        if(other.findDet().isEqual(Complex.ZERO)){
+            throw new ArithmeticException("Matrix is singular, cannot divide");
+        }
+        return this.multiply(other.inverse());
     }
 }

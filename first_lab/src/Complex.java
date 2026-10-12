@@ -5,13 +5,14 @@ public class Complex {
     private final double re;
     private final double im;
 
-    public Complex(){
-        this(0,0);
-    }
     public Complex(double re, double im){
         this.re = re;
         this.im = im;
     }
+
+    public static final Complex ZERO = new Complex(0, 0);
+    public static final Complex ONE = new Complex(1, 0);
+    public static final Complex minusONE = new Complex(-1, 0);
 
     private static boolean isZero(double x){
         return Math.abs(x) < EPS;
@@ -54,6 +55,10 @@ public class Complex {
         double newRe = (re * p.re + im * p.im) / denom;
         double newIm = (im * p.re - re * p.im) / denom;
         return new Complex(newRe, newIm);
+    }
+
+    public boolean isEqual(Complex p){
+        return isZero(re - p.re) && isZero(im - p.im);
     }
 
     @Override
