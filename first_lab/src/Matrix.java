@@ -113,7 +113,7 @@ public class Matrix {
         return new Matrix(newData);
     }
 
-    public Matrix divByNum(double num){ //добавить исключение при делении на ноль
+    public Matrix divByNum(double num){
         Complex[][] newData = new Complex[n][m];
         Complex numInComplex = new Complex(num, 0);
         for (int i = 0; i < n; i++){

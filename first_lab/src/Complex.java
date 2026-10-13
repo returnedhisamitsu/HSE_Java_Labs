@@ -64,8 +64,8 @@ public class Complex {
     @Override
     public String toString(){
         if (isZero(re) && isZero(im)) {return "0";}
-        if (isZero(re)) {return im + "i";}
-        if (isZero(im)) {return String.valueOf(re);}
+        if (isZero(re)) {return fmt(im) + "i";}
+        if (isZero(im)) {return fmt(re);}
 
         String sign = (im < 0) ? " - " : " + ";
         return fmt(re) + sign + fmt(Math.abs(im)) + "i";

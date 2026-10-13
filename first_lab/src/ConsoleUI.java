@@ -78,13 +78,11 @@ public class ConsoleUI {
         int m = readInt("Cols of " + name + ": ");
         Matrix result = new Matrix(n, m);
 
+        System.out.println("Enter each row as " + m + " numbers separated by spaces.");
+        System.out.println("Complex number: re,im (like 1,2). Real number: just re (like 5).");
+
         for (int i = 0; i < n; i++){
-            for (int j = 0; j < m; j++){
-                System.out.println(name + "[" + i + "][" + j + "]:");
-                double re = readDouble(" re: ");
-                double im = readDouble(" im: ");
-                result.set(i, j, new Complex(re, im));
-            }
+            readRow(result, i, m, name);
         }
         return result;
     }
@@ -95,7 +93,7 @@ public class ConsoleUI {
             System.out.println("This matrix is not entered yet.");
             return;
         }
-        System.out.println(name + "=\n" + matrix);
+        System.out.println(name + " =\n" + matrix);
     }
 
     private void showDet(Matrix matrix){
@@ -176,6 +174,35 @@ public class ConsoleUI {
             }
             catch (NumberFormatException e){
                 System.out.println("This is not a number, try again.");
+            }
+        }
+    }
+
+    private Complex parseComplex(String token){
+        String[] parse = token.split(",");
+        if (parse.length == 1){
+            return new Complex(Double.parseDouble(parse[0]), 0);
+        }
+        if (parse.length == 2){
+            return new Complex(Double.parseDouble(parse[0]), Double.parseDouble(parse[1]));
+        }
+        throw new NumberFormatException("Bad complex number: " + token);
+    }
+
+    private void readRow(Matrix matrix, int i, int m, String name){
+        while (true) {
+            System.out.println("name" + " row " + i + ": ");
+            String[] tokens = scanner.nextLine().trim().split("\\s+");
+            try {
+                if (tokens.length != m) {
+                    throw new IllegalArgumentException("You need to write " + m + " elements to fill the row, try again");
+                }
+                for (int j = 0; j < m; j++) {
+                    matrix.set(i, j, parseComplex(tokens[j]));
+                }
+                return;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage() + " Try again.");
             }
         }
     }
