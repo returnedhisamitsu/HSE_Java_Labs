@@ -12,7 +12,7 @@ A console program in Java for working with matrices of complex numbers.
   - determinant
   - inverse matrix
   - transposition
-  - multiplication and division by a number
+  - multiplication and division by a (complex) number
 - Interactive console menu with two matrices, `A` and `B`
 - Input validation: wrong sizes, non-square matrices, singular matrices and division by zero produce a clear error message instead of crashing the program
 
@@ -51,6 +51,8 @@ The program shows a menu:
 7 - Find A / B
 8 - Find Inverse Matrix
 9 - Transpose Matrix
+10 - Multiply by number
+11 - Divide by number
 0 - Exit
 ```
 
@@ -83,4 +85,5 @@ Entering a 2x2 matrix with complex elements:
 - Results are printed with two digits after the decimal point.
 - Comparisons with zero use a small tolerance (`1e-9`) because of floating-point errors.
 - The determinant and the inverse matrix are computed with cofactor expansion, which is slow for large matrices (O(n!)). The program is intended for small matrices.
+- Matrix division `A / B` means `A * B^-1` (B is multiplied from the right).
 - `Complex` is immutable: every operation returns a new object.

@@ -25,6 +25,8 @@ public class ConsoleUI {
                     case "7" -> showDivide();
                     case "8" -> showInverse(askName());
                     case "9" -> showTranspose(askName());
+                    case "10" -> multiplyByNum(askName());
+                    case "11" -> divideByNum(askName());
                     case "0" -> {
                         System.out.println("Goodbye!");
                         return;
@@ -48,6 +50,8 @@ public class ConsoleUI {
         System.out.println(" 7 - Find A / B");
         System.out.println(" 8 - Find Inverse Matrix");
         System.out.println(" 9 - Transpose Matrix");
+        System.out.println(" 10 - Multiply by number");
+        System.out.println(" 11 - Divide by number");
         System.out.println(" 0 - Exit");
         System.out.println("<-------------------------->");
     }
@@ -161,19 +165,7 @@ public class ConsoleUI {
                 return Integer.parseInt(scanner.nextLine().trim());
             }
             catch (NumberFormatException e){
-                System.out.println("This is not a number, try again.");
-            }
-        }
-    }
-
-    private double readDouble(String message){
-        while (true){
-            System.out.println(message);
-            try {
-                return Double.parseDouble(scanner.nextLine().trim());
-            }
-            catch (NumberFormatException e){
-                System.out.println("This is not a number, try again.");
+                System.out.println("Error: " + e.getMessage() + " Try again.");
             }
         }
     }
@@ -189,9 +181,21 @@ public class ConsoleUI {
         throw new NumberFormatException("Bad complex number: " + token);
     }
 
+    private Complex readComplex(String message){
+        while (true){
+            System.out.println(message);
+            try {
+                return parseComplex(scanner.nextLine().trim());
+            }
+            catch (IllegalArgumentException e){
+                System.out.println("Error: " + e.getMessage() + " Try again.");
+            }
+        }
+    }
+
     private void readRow(Matrix matrix, int i, int m, String name){
         while (true) {
-            System.out.println("name" + " row " + i + ": ");
+            System.out.println(name + " row " + (i + 1) + ": ");
             String[] tokens = scanner.nextLine().trim().split("\\s+");
             try {
                 if (tokens.length != m) {
@@ -205,5 +209,23 @@ public class ConsoleUI {
                 System.out.println("Error: " + e.getMessage() + " Try again.");
             }
         }
+    }
+
+    private void multiplyByNum(String name){
+        Matrix matrix = getMatrix(name);
+        if (matrix == null){
+            System.out.println("Matrix is not entered yet");
+            return;
+        }
+        System.out.println(matrix.multByNum(readComplex("Write complex number: re,im (like 1,2). Real number: just re (like 5).")));
+    }
+
+    private void divideByNum(String name){
+        Matrix matrix = getMatrix(name);
+        if (matrix == null){
+            System.out.println("Matrix is not entered yet");
+            return;
+        }
+        System.out.println(matrix.divByNum(readComplex("Write complex number: re,im (like 1,2). Real number: just re (like 5).")));
     }
 }

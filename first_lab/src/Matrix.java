@@ -102,23 +102,21 @@ public class Matrix {
         return new Matrix(newData);
     }
 
-    public Matrix multByNum(double num){
+    public Matrix multByNum(Complex num){
         Complex[][] newData = new Complex[n][m];
-        Complex numInComplex = new Complex(num, 0);
         for (int i = 0; i < n; i++){
             for (int j = 0; j < m; j++){
-                newData[i][j] = data[i][j].multiply(numInComplex);
+                newData[i][j] = data[i][j].multiply(num);
             }
         }
         return new Matrix(newData);
     }
 
-    public Matrix divByNum(double num){
+    public Matrix divByNum(Complex num){
         Complex[][] newData = new Complex[n][m];
-        Complex numInComplex = new Complex(num, 0);
         for (int i = 0; i < n; i++){
             for (int j = 0; j < m; j++){
-                newData[i][j] = data[i][j].divide(numInComplex);
+                newData[i][j] = data[i][j].divide(num);
             }
         }
         return new Matrix(newData);
