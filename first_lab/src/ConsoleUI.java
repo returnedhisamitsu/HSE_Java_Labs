@@ -120,24 +120,28 @@ public class ConsoleUI {
         if (!bothEntered()) return;
         Matrix result = a.add(b);
         System.out.println("A + B:\n" + result);
+        offerSave(result);
     }
 
     private void showSub(){
         if (!bothEntered()) return;
         Matrix result = a.sub(b);
         System.out.println("A - B:\n" + result);
+        offerSave(result);
     }
 
     private void showMultiply(){
         if (!bothEntered()) return;
         Matrix result = a.multiply(b);
         System.out.println("A * B:\n" + result);
+        offerSave(result);
     }
 
     private void showDivide(){
         if (!bothEntered()) return;
         Matrix result = a.divide(b);
         System.out.println("A / B:\n" + result);
+        offerSave(result);
     }
 
     private void showInverse(String name){
@@ -146,7 +150,9 @@ public class ConsoleUI {
             System.out.println("This matrix is not entered yet.");
             return;
         }
-        System.out.println("For matrix " + name + ":\n" + matrix + "\n\nInverse is:\n" + matrix.inverse());
+        Matrix result = matrix.inverse();
+        System.out.println("For matrix " + name + ":\n" + matrix + "\n\nInverse is:\n" + result);
+        offerSave(result);
     }
 
     private void showTranspose(String name){
@@ -155,7 +161,9 @@ public class ConsoleUI {
             System.out.println("This matrix is not entered yet.");
             return;
         }
-        System.out.println("For matrix " + name + ":\n" + matrix + "\n\nTranspose is:\n" + matrix.transpose());
+        Matrix result = matrix.transpose();
+        System.out.println("For matrix " + name + ":\n" + matrix + "\n\nTranspose is:\n" + result);
+        offerSave(result);
     }
 
     private int readInt(String message){
@@ -171,7 +179,7 @@ public class ConsoleUI {
     }
 
     private Complex parseComplex(String token){
-        String[] parse = token.split(",");
+        String[] parse = token.split(",", -1);
         if (parse.length == 1){
             return new Complex(Double.parseDouble(parse[0]), 0);
         }
@@ -217,7 +225,9 @@ public class ConsoleUI {
             System.out.println("Matrix is not entered yet");
             return;
         }
-        System.out.println(matrix.multByNum(readComplex("Write complex number: re,im (like 1,2). Real number: just re (like 5).")));
+        Matrix result = matrix.multByNum(readComplex("Write complex number: re,im (like 1,2). Real number: just re (like 5)."));
+        System.out.println(result);
+        offerSave(result);
     }
 
     private void divideByNum(String name){
@@ -226,6 +236,24 @@ public class ConsoleUI {
             System.out.println("Matrix is not entered yet");
             return;
         }
-        System.out.println(matrix.divByNum(readComplex("Write complex number: re,im (like 1,2). Real number: just re (like 5).")));
+        Matrix result = matrix.divByNum(readComplex("Write complex number: re,im (like 1,2). Real number: just re (like 5)."));
+        System.out.println(result);
+        offerSave(result);
+    }
+
+    private void offerSave(Matrix matrix){
+        System.out.println("Do you want to save result in matrix A or B (enter to skip)?");
+        while (true){
+            String answer = scanner.nextLine().trim().toUpperCase();
+            if (answer.isEmpty()) {return;}
+            try {
+                set(answer, matrix);
+                System.out.println("Saved as " + answer + ".");
+            }
+            catch (IllegalArgumentException e){
+                System.out.println("Error: " + e.getMessage() + ". Enter A or B or just press Enter to skip.");
+            }
+        }
+
     }
 }

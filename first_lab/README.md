@@ -13,6 +13,7 @@ A console program in Java for working with matrices of complex numbers.
   - inverse matrix
   - transposition
   - multiplication and division by a (complex) number
+- Any result can be saved as `A` or `B`, so operations can be chained, for example `(A + B) * B`
 - Interactive console menu with two matrices, `A` and `B`
 - Input validation: wrong sizes, non-square matrices, singular matrices and division by zero produce a clear error message instead of crashing the program
 
@@ -56,7 +57,8 @@ The program shows a menu:
 0 - Exit
 ```
 
-To enter a matrix, choose `1`, type the matrix name (`A` or `B`), then the number of rows and columns. After that, enter the matrix row by row, with elements separated by spaces.
+To enter a matrix, choose `1`, type the matrix name (`A` or `B`), then the number of rows and columns. After that, enter the matrix row by row, with elements separated by spaces.\
+After every operation that returns a matrix, the program asks whether to save the result as `A` or `B`. Type `A` or `B` to save it, or press Enter to skip.
 
 ### Number format
 
