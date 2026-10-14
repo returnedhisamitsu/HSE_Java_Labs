@@ -41,6 +41,7 @@ public class ConsoleUI {
 
     private void printMenu(){
         System.out.println();
+        System.out.println("<-------------------------->");
         System.out.println(" 1 - Enter Matrix");
         System.out.println(" 2 - Show Matrix");
         System.out.println(" 3 - Find determinant");
@@ -249,6 +250,7 @@ public class ConsoleUI {
             try {
                 set(answer, matrix);
                 System.out.println("Saved as " + answer + ".");
+                return;
             }
             catch (IllegalArgumentException e){
                 System.out.println("Error: " + e.getMessage() + ". Enter A or B or just press Enter to skip.");
